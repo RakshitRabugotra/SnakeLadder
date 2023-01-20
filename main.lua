@@ -12,7 +12,7 @@ function love.load()
     math.randomseed(os.time())
 
     -- Setting the default filter for textures
-    love.graphics.setDefaultFilter('nearest', 'nearest')
+    -- love.graphics.setDefaultFilter('nearest', 'nearest')
 
     -- Setting up background color
     love.graphics.setBackgroundColor(128/255, 128/255, 128/255, 1)
@@ -36,22 +36,28 @@ function love.load()
 
     -- Load the fonts
     gFonts = {
-        ['small'] = love.graphics.newFont('fonts/font.ttf', 8),
-        ['medium'] = love.graphics.newFont('fonts/font.ttf', 16),
-        ['large'] = love.graphics.newFont('fonts/font.ttf', 32),
-        ['huge'] = love.graphics.newFont('fonts/font.ttf', 56),
+        ['small'] = love.graphics.newFont('fonts/font.ttf', 16),
+        ['medium'] = love.graphics.newFont('fonts/font.ttf', 32),
+        ['large'] = love.graphics.newFont('fonts/font.ttf', 64),
+        ['huge'] = love.graphics.newFont('fonts/font.ttf', 112),
     }
 
     -- Load the sound-effects
     gSounds = {
-
+        ['select'] = love.audio.newSource('sounds/select.wav', 'static'),
+        ['confirm'] = love.audio.newSource('sounds/confirm.wav', 'static')
     }
 
     -- Setup the virtual screen
-    push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
-        vsync = VSYNC,
-        fullscreen = FULLSCREEN,
-        resizable = RESIZABLE
+    -- push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
+    --     vsync = VSYNC,
+    --     fullscreen = FULLSCREEN,
+    --     resizable = RESIZABLE
+    -- })
+    love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {
+        vsync = VYSNC,
+        resizable = RESIZABLE,
+        fullscreen = FULLSCREEN
     })
 
     -- For handling the input anywhere inside the code
@@ -91,12 +97,16 @@ end
 
 -- Called by LOVE2D as an event callback to resizing the window
 function love.resize(w, h)
-    push:resize(w, h)
+    -- Reset the globals
+    WINDOW_WIDTH = w
+    WINDOW_HEIGHT = h
+    -- push:resize(w, h)
 end
 
 -- Called by LOVE2D every frame to render things on the screen
 function love.draw()
-    push:apply('start')
+    -- push:apply('start')
+    love.graphics.clear({0, 0, 0, 1})
 
     -- Rendering the things in State-Machine to the screen
     gStateMachine:render()
@@ -104,5 +114,5 @@ function love.draw()
     -- Rendering the FPS on screen
     renderFPS(SHOW_FPS)
 
-    push:apply('end')
+    -- push:apply('end')
 end

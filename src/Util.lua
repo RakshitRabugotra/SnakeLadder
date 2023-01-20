@@ -13,3 +13,15 @@ function renderFPS(show_fps)
     love.graphics.print("FPS: "..tostring(love.timer.getFPS()), 4, 4)
     love.graphics.setColor(1, 1, 1, 1)
 end
+
+--[[
+    To print a 2D array, presented in table
+]]
+function printTable(sampleTable)
+    for r, row in ipairs(sampleTable) do
+        for c, element in ipairs(row) do
+            io.write("("..tostring(element)..") ")
+        end
+        io.write("\n")
+    end
+end

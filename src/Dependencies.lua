@@ -23,6 +23,9 @@ Timer = require 'src/knife.timer'
 
 -- The states for our state machine
 require 'src/StateMachine'
-require 'src/states/game/BaseState'
-require 'src/states/game/StartState'
-require 'src/states/game/PlayState'
+require 'src/states/BaseState'
+require 'src/states/StartState'
+require 'src/states/PlayState'
+
+-- The entities used in our game
+require 'src/Piece'
