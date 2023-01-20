@@ -32,8 +32,6 @@ function Piece:update(dt)
     ]]
     self.x = math.min(GRID_N_COLS, math.max(1, self.x))
     self.y = math.min(GRID_N_ROWS, math.max(1, self.y))
-
-    io.write("Current player position: "..tostring(self.x).."/"..tostring(self.y).."\n")
 end
 
 function Piece:render(offsetX, offsetY)

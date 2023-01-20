@@ -16,8 +16,6 @@ function PlayState:init()
         table.insert(gBoard, column)
     end
 
-    printTable(gBoard)
-
     --[[
         Instantiate a playing piece
     ]]
@@ -25,10 +23,20 @@ function PlayState:init()
         color = COLORS.RED,
         x = 1,
         y = 1
-    } 
+    }
+
+    --[[
+        Instantiate a Dice object
+    ]]
+    gDice = Dice {
+        x = 0,
+        y = 0,
+        sizeFactor = 2.75
+    }
 end
 
 function PlayState:update(dt)
+    gDice:update(dt)
     gPlayer:update(dt)
 end
 
@@ -52,6 +60,13 @@ function PlayState:render()
             end
         end
     end
+
+    -- Render the dice over the board (if overlapping)
+
+    -- Calculate the position of the dice
+    gDice.x = (offsetX - gDice.width)/2
+    gDice.y = (WINDOW_HEIGHT - gDice.height)/2 
+    gDice:render()
 
     -- love.graphics.printf("PLAY STATE", 0, VIRTUAL_HEIGHT*0.5-16, VIRTUAL_WIDTH, 'center')
 
