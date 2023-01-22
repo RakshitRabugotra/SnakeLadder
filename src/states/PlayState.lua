@@ -22,21 +22,34 @@ function PlayState:init()
     gPlayer = Piece {
         color = COLORS.RED,
         x = 1,
-        y = 1
+        y = 10
     }
 
     --[[
         Instantiate a Dice object
     ]]
-    gDice = Dice {
-        x = 0,
-        y = 0,
-        sizeFactor = 2.75
-    }
+    gDice = Dice{}
+
+    self.lastPosX = gPlayer.x
+    self.lastPosY = gPlayer.y
+
+    -- Set the die to move player on every roll
+    gDice:onRollCall(function(numberOfTiles)
+        gPlayer:move(numberOfTiles)
+    end)
 end
 
 function PlayState:update(dt)
+    local x = gPlayer.x
+    local y = gPlayer.y
+
     gDice:update(dt)
+
+    if love.keyboard.wasPressed('space') then
+        self.lastPosX = x
+        self.lastPosY = y
+    end
+    
     gPlayer:update(dt)
 end
 
@@ -68,6 +81,14 @@ function PlayState:render()
     gDice.y = (WINDOW_HEIGHT - gDice.height)/2 
     gDice:render()
 
+    -- Render the last position o the dice
+    love.graphics.setColor(COLORS.GREEN)
+    love.graphics.rectangle("line", (self.lastPosX-1)*TILESIZE + offsetX, (self.lastPosY-1)*TILESIZE + offsetY, TILESIZE, TILESIZE, 8, 8)
+
+    -- Render a line between these two boxs
+    love.graphics.setLineWidth(2)
+    love.graphics.line((self.lastPosX-1)*TILESIZE + offsetX + TILESIZE/2, (self.lastPosY-1)*TILESIZE + offsetY + TILESIZE/2, (gPlayer.x-1)*TILESIZE + offsetX + TILESIZE/2, (gPlayer.y-1)*TILESIZE + offsetY + TILESIZE/2)
+
     -- love.graphics.printf("PLAY STATE", 0, VIRTUAL_HEIGHT*0.5-16, VIRTUAL_WIDTH, 'center')
 
     love.graphics.setColor({1, 1, 1, 1})
@@ -78,5 +99,11 @@ end
     Util functions
 ]]
 function renderBlock(x, y, width, height, offsetX, offsetY)
+    -- Render the rectangle
     love.graphics.rectangle("line", (x-1)*width + offsetX, (y-1)*height + offsetY, width, height, 5, 5)
+    -- Also put a small text indicating the number of the tile
+    love.graphics.setFont(gFonts['small'])
+    -- To take care of the order
+    local secondDigit = (y % 2 == 0) and (x-1) or (10-x)
+    love.graphics.printf(tostring(10-y)..tostring(secondDigit), (x-1)*width + offsetX, (y-1)*height + offsetY, TILESIZE, 'right')
 end
