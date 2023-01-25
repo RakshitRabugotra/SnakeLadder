@@ -19,7 +19,7 @@ push = require 'lib/push'
 Class = require 'lib/class'
 
 -- The kinfe module for timer and tweens, etc
-Timer = require 'src/knife.timer'
+Timer = require 'lib/knife.timer'
 
 -- The states for our state machine
 require 'src/StateMachine'

@@ -67,6 +67,9 @@ end
 
 -- Called by LOVE2D every frame to update the entities on screen
 function love.update(dt)
+    -- Update the Timer
+    Timer.update(dt)
+    
     -- Updating what's in the state-machine
     gStateMachine:update(dt)
 

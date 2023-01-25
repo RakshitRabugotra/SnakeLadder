@@ -34,7 +34,7 @@ function PlayState:init()
 
     -- Set the die to move player on every roll
     self.dice:onRollCall(function(numberOfTiles)
-        self.player[1]:move(numberOfTiles)
+        self.players[1]:move(numberOfTiles)
     end)
 
     -- Initializing a jump-object, (can be Ladder or Snake)
@@ -47,10 +47,6 @@ function PlayState:init()
             endY = 9
         },
     }
-
-    -- For debugging only
-    self.lastPosX = self.players[1].x
-    self.lastPosY = self.players[1].y
 end
 
 function PlayState:update(dt)
@@ -75,6 +71,9 @@ function PlayState:update(dt)
         for i, jumpObject in ipairs(self.jumpObjects) do
             if(jumpObject:collides(player)) then
                 jumpObject:move(player)
+                -- Timer.tween(2, {
+                    -- [player] = {x = jumpObject.endX, y = jumpObject.endY}
+                -- })
             end
         end
     end
@@ -93,14 +92,6 @@ function PlayState:render()
             renderBlock(r, c, TILESIZE, TILESIZE, offsetX, offsetY)
         end
     end
-
-    -- Render the last position
-    love.graphics.setColor(COLORS.GREEN)
-    love.graphics.rectangle("line", (self.lastPosX-1)*TILESIZE + offsetX, (self.lastPosY-1)*TILESIZE + offsetY, TILESIZE, TILESIZE, 8, 8)
-
-    -- Render a line between these two boxs
-    love.graphics.setLineWidth(2)
-    love.graphics.line((self.lastPosX-1)*TILESIZE + offsetX + TILESIZE/2, (self.lastPosY-1)*TILESIZE + offsetY + TILESIZE/2, (self.players[1].x-1)*TILESIZE + offsetX + TILESIZE/2, (self.players[1].y-1)*TILESIZE + offsetY + TILESIZE/2)
 
     --[[
         Render the Ladders n Snakes

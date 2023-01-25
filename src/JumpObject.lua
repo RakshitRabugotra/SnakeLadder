@@ -37,8 +37,10 @@ function JumpObject:move(object)
     --[[
         Moves the object to the end position of the jump object
     ]]
-    object.x = self.endX
-    object.y = self.endY
+    -- We will tween the position of object over a period of time
+    Timer.tween(1, {
+        [object] = {x = self.endX, y = self.endY}
+    })
 end
 
 function JumpObject:render(renderOffsetX, renderOffsetY)
