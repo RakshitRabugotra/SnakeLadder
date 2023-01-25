@@ -4,10 +4,10 @@
 PlayState = Class{__includes = BaseState}
 
 function PlayState:init()
-
-    -- Instantiate a 2D array definning the positions the player can get to
+    --[[
+        Instantiate a 2D array definning the positions the player can get to
+    ]]
     gBoard = {}
-
     for row = 1, 10 do
         column = {}
         for col = 1, 10 do
@@ -19,38 +19,62 @@ function PlayState:init()
     --[[
         Instantiate a playing piece
     ]]
-    gPlayer = Piece {
-        color = COLORS.RED,
-        x = 1,
-        y = 10
+    self.players = {
+        Piece {
+            color = COLORS.RED,
+            x = 1,
+            y = 10
+        }
     }
 
     --[[
         Instantiate a Dice object
     ]]
-    gDice = Dice{}
-
-    self.lastPosX = gPlayer.x
-    self.lastPosY = gPlayer.y
+    self.dice = Dice{}
 
     -- Set the die to move player on every roll
-    gDice:onRollCall(function(numberOfTiles)
-        gPlayer:move(numberOfTiles)
+    self.dice:onRollCall(function(numberOfTiles)
+        self.player[1]:move(numberOfTiles)
     end)
+
+    -- Initializing a jump-object, (can be Ladder or Snake)
+    self.jumpObjects = {
+        JumpObject {
+            startX = 2,
+            startY = 1,
+    
+            endX = 9,
+            endY = 9
+        },
+    }
+
+    -- For debugging only
+    self.lastPosX = self.players[1].x
+    self.lastPosY = self.players[1].y
 end
 
 function PlayState:update(dt)
-    local x = gPlayer.x
-    local y = gPlayer.y
-
-    gDice:update(dt)
-
+    -- Update the Dice object (to check for the input)
+    self.dice:update(dt)
+    
+    local x = self.players[1].x
+    local y = self.players[1].y
+    -- For debugging purpose only
     if love.keyboard.wasPressed('space') then
         self.lastPosX = x
         self.lastPosY = y
     end
     
-    gPlayer:update(dt)
+    -- Update all the players
+    for i, player in ipairs(self.players) do
+        player:update(dt)
+    end
+
+    --[[
+        If the player's position collides with jump object,
+        move it
+    ]]
+    if(self.jumpObjects[1]:collides(self.players[1])) then self.jumpObjects[1]:move(self.players[1]) end
 end
 
 function PlayState:render()
@@ -64,34 +88,39 @@ function PlayState:render()
     for r, row in ipairs(gBoard) do
         for c, element in ipairs(row) do
             renderBlock(r, c, TILESIZE, TILESIZE, offsetX, offsetY)
-
-            --[[
-                Check and render players
-            ]]
-            if c == gPlayer.x and r == gPlayer.y then
-                gPlayer:render(offsetX, offsetY)    
-            end
         end
     end
 
-    -- Render the dice over the board (if overlapping)
-
-    -- Calculate the position of the dice
-    gDice.x = (offsetX - gDice.width)/2
-    gDice.y = (WINDOW_HEIGHT - gDice.height)/2 
-    gDice:render()
-
-    -- Render the last position o the dice
+    -- Render the last position
     love.graphics.setColor(COLORS.GREEN)
     love.graphics.rectangle("line", (self.lastPosX-1)*TILESIZE + offsetX, (self.lastPosY-1)*TILESIZE + offsetY, TILESIZE, TILESIZE, 8, 8)
 
     -- Render a line between these two boxs
     love.graphics.setLineWidth(2)
-    love.graphics.line((self.lastPosX-1)*TILESIZE + offsetX + TILESIZE/2, (self.lastPosY-1)*TILESIZE + offsetY + TILESIZE/2, (gPlayer.x-1)*TILESIZE + offsetX + TILESIZE/2, (gPlayer.y-1)*TILESIZE + offsetY + TILESIZE/2)
+    love.graphics.line((self.lastPosX-1)*TILESIZE + offsetX + TILESIZE/2, (self.lastPosY-1)*TILESIZE + offsetY + TILESIZE/2, (self.players[1].x-1)*TILESIZE + offsetX + TILESIZE/2, (self.players[1].y-1)*TILESIZE + offsetY + TILESIZE/2)
 
-    -- love.graphics.printf("PLAY STATE", 0, VIRTUAL_HEIGHT*0.5-16, VIRTUAL_WIDTH, 'center')
+    --[[
+        Render the Ladders n Snakes
+    ]]
+    for i, jumpObject in ipairs(self.jumpObjects) do
+        jumpObject:render(offsetX, offsetY)
+    end
 
-    love.graphics.setColor({1, 1, 1, 1})
+    --[[
+        Render the players
+    ]]
+    for i, player in ipairs(self.players) do
+        player:render(offsetX, offsetY)
+    end
+
+    -- Render the dice over the board (if overlapping)
+    -- Calculate the position of the dice
+    self.dice.x = (offsetX - self.dice.width)/2
+    self.dice.y = (WINDOW_HEIGHT - self.dice.height)/2 
+    self.dice:render()
+
+    -- Set the Color of the screen to Default
+    love.graphics.setColor(COLORS.DEFAULT)
 end
 
 

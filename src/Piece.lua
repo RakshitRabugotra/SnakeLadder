@@ -39,7 +39,7 @@ function Piece:render(offsetX, offsetY)
         Render the piece according to the color
     ]]
     love.graphics.setColor(self.color)
-    love.graphics.rectangle("line", (self.x-1)*TILESIZE + offsetX + TILESIZE*0.15, (self.y-1)*TILESIZE + offsetY + TILESIZE*0.15, self.width, self.height, 4, 4)
+    love.graphics.rectangle("line", (self.x-1)*TILESIZE + offsetX + TILESIZE*0.125, (self.y-1)*TILESIZE + offsetY + TILESIZE*0.125, self.width, self.height, 4, 4)
     love.graphics.setColor(COLORS.DEFAULT)
 end
 
