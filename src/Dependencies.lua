@@ -30,3 +30,4 @@ require 'src/states/PlayState'
 -- The entities used in our game
 require 'src/Piece'
 require 'src/Dice'
+require 'src/JumpObject'
