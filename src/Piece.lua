@@ -49,50 +49,62 @@ end
 function Piece:move(numberOfTiles)
     --[[
         We need a function which moves the Piece correctly
+        this function should return the correct landing coordinates of the piece
     ]]
-    if(numberOfTiles <= 0) then return end
-
+    -- Make temp position variables
+    local posX, posY = self.x, self.y
+    
+    if(numberOfTiles <= 0) then
+        return {posX, posY}
+    end
     -- Let's take a iterative approach
 
     -- Determine which direction will we move,
     -- if we're on a even 'y' then move right, else left
     local step = (self.y % 2 == 0) and 1 or -1
-    io.write("Step: ", step, "\n")
     
-    while(step == 1 and self.x <= GRID_N_COLS and numberOfTiles > 0) do
-        self.x = self.x + step
+    while(step == 1 and posX <= GRID_N_COLS and numberOfTiles > 0) do
+        posX = posX + step
         numberOfTiles = numberOfTiles - 1
     end
 
-    while(step == -1 and self.x >= 1 and numberOfTiles > 0) do
+    while(step == -1 and posX >= 1 and numberOfTiles > 0) do
         numberOfTiles = numberOfTiles - 1
-        self.x = self.x + step
+        posX = posX + step
     end
 
     -- If there are extra tiles left... then move up the row
     -- and repeat the above process
-    if(numberOfTiles > 0 or self.x <= 0 or self.x > GRID_N_COLS) then
-        self.y = self.y - 1
+    if(numberOfTiles > 0 or posX <= 0 or posX > GRID_N_COLS) then
+        posY = posY - 1
 
         -- If we jump out of bounds, then don't do anything
-        if(self.y < 1) then return end
+        if(posY < 1) then
+            posY = 1
+            return {posX, posY}
+        end
         
         if(step > 0) then
-            self.x = GRID_N_COLS
+            posX = GRID_N_COLS
         else
-            self.x = 1
+            posX = 1
         end
-        -- self.x = self.x - step
 
-        self:move(numberOfTiles)
+        -- Move to this position before calculating the new move
+        -- As this function will update the self.x and self.y
+        self:gotoPlace(posX, posY)
+        return self:move(numberOfTiles)
     end
+
+    return {posX, posY}
 end
 
 --[[
     Function directly teleporting the piece from one place to other
 ]]
-function Piece:gotoPlace(x, y)
+function Piece:gotoPlace(newX, newY)
     -- Validate and move the piece
-    self.x = x
-    self.y = y
+    Timer.tween(0.25, {
+        [self] = {x = newX, y = newY}
+    })
 end

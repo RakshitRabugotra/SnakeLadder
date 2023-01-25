@@ -34,7 +34,9 @@ function PlayState:init()
 
     -- Set the die to move player on every roll
     self.dice:onRollCall(function(numberOfTiles)
-        self.players[1]:move(numberOfTiles)
+        pos = self.players[1]:move(numberOfTiles)
+        io.write("new Position: X/Y:", pos[1], "/", pos[2], "\n")
+        self.players[1]:gotoPlace(pos[1], pos[2])
     end)
 
     -- Initializing a jump-object, (can be Ladder or Snake)
