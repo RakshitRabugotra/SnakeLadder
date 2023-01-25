@@ -124,11 +124,21 @@ end
     Util functions
 ]]
 function renderBlock(x, y, width, height, offsetX, offsetY)
+    local secondDigit = (y % 2 == 0) and (x-1) or (10-x)
+    local tileColor = (y % 2 == 0) and COLORS.TILE_COLOR_EVEN or COLORS.TILE_COLOR_ODD
+    local fontColor = (y % 2 == 0) and COLORS.TILE_COLOR_ODD or COLORS.TILE_COLOR_EVEN
+
     -- Render the rectangle
-    love.graphics.rectangle("line", (x-1)*width + offsetX, (y-1)*height + offsetY, width, height, 5, 5)
+    love.graphics.setColor(tileColor)
+    love.graphics.rectangle("fill", (x-1)*width + offsetX, (y-1)*height + offsetY, width, height, 5, 5)
+
     -- Also put a small text indicating the number of the tile
     love.graphics.setFont(gFonts['small'])
+    love.graphics.setColor(fontColor)
     -- To take care of the order
-    local secondDigit = (y % 2 == 0) and (x-1) or (10-x)
     love.graphics.printf(tostring(10-y)..tostring(secondDigit), (x-1)*width + offsetX, (y-1)*height + offsetY, TILESIZE, 'right')
+
+    love.graphics.setColor(COLORS.TILE_COLOR_BORDER)
+    -- Make a border rectangle
+    love.graphics.rectangle("line", (x-1)*width + offsetX, (y-1)*height + offsetY, width, height, 5, 5)
 end

@@ -31,7 +31,12 @@ COLORS = {
     WHITE = {1, 1, 1, 1},
     RED = {1, 0, 0, 1},
     GREEN = {0, 1, 0, 1},
-    BLUE = {0, 0, 1, 1}
+    BLUE = {0, 0, 1, 1},
+    BLACK = {0, 0, 0, 1},
+
+    TILE_COLOR_EVEN = {234/255, 219/255, 196/255, 1},
+    TILE_COLOR_ODD = {189/255, 160/255, 116/255, 1},
+    TILE_COLOR_BORDER = {107/255, 65/255, 37/255, 1},
 }
 
 COLORS.DEFAULT = COLORS.WHITE
