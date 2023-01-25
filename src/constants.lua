@@ -41,3 +41,200 @@ COLORS = {
 }
 
 COLORS.DEFAULT = COLORS.WHITE
+
+
+--[[
+    All the jump objects are here
+]]
+Class = require 'lib/class'
+require 'src/JumpObject'
+
+JUMP_OBJECTS = {
+    JumpObject {
+        startX = 2,
+        startY = 1,
+        id = 'snake',
+        endX = 3,
+        endY = 4
+    },
+    JumpObject {
+        startX = 4,
+        startY = 1,
+        id = 'snake',
+        endX = 7,
+        endY = 2
+    },
+    JumpObject {
+        startX = 9,
+        startY = 1,
+        id = 'snake',
+        endX = 5,
+        endY = 8
+    },
+    JumpObject {
+        startX = 3,
+        startY = 2,
+        id = 'snake',
+        endX = 5,
+        endY = 6
+    },
+    JumpObject {
+        startX = 5,
+        startY = 2,
+        id = 'snake',
+        endX = 2,
+        endY = 5
+    },
+    JumpObject {
+        startX = 10,
+        startY = 2,
+        id = 'snake',
+        endX = 9,
+        endY = 6
+    },
+    JumpObject {
+        startX = 6,
+        startY = 3,
+        id = 'snake',
+        endX = 8,
+        endY = 8
+    },
+    JumpObject {
+        startX = 1,
+        startY = 5,
+        id = 'snake',
+        endX = 3,
+        endY = 8
+    },
+    JumpObject {
+        startX = 5,
+        startY = 5,
+        id = 'snake',
+        endX = 1,
+        endY = 10
+    },
+    JumpObject {
+        startX = 7,
+        startY = 5,
+        id = 'snake',
+        endX = 5,
+        endY = 7
+    },
+    JumpObject {
+        startX = 10,
+        startY = 5,
+        id = 'snake',
+        endX = 6,
+        endY = 10
+    },
+    JumpObject {
+        startX = 2,
+        startY = 7,
+        id = 'snake',
+        endX = 5,
+        endY = 10
+    },
+    JumpObject {
+        startX = 7,
+        startY = 8,
+        id = 'snake',
+        endX = 10,
+        endY = 10
+    },
+    JumpObject {
+        startX = 3,
+        startY = 9,
+        id = 'snake',
+        endX = 1,
+        endY = 10
+    },
+    JumpObject {
+        startX = 8,
+        startY = 10,
+        id = 'snake',
+        endX = 4,
+        endY = 10
+    },
+    
+
+    --[[
+        Ladders on the games
+    ]]
+    JumpObject {
+        endX = 3,
+        endY = 1,
+        id = 'ladder',
+        startX = 1,
+        startY = 2,
+    },
+    JumpObject {
+        endX = 10,
+        endY = 1,
+        id = 'ladder',
+        startX = 8,
+        startY = 2,
+    },
+    JumpObject {
+        endX = 3,
+        endY = 3,
+        id = 'ladder',
+        startX = 1,
+        startY = 3,
+    },
+    JumpObject {
+        endX = 5,
+        endY = 3,
+        id = 'ladder',
+        startX = 4,
+        startY = 5,
+    },
+    JumpObject {
+        endX = 7,
+        endY = 3,
+        id = 'ladder',
+        startX = 4,
+        startY = 9,
+    },
+    JumpObject {
+        endX = 7,
+        endY = 4,
+        id = 'ladder',
+        startX = 9,
+        startY = 6,
+    },
+    JumpObject {
+        endX = 4,
+        endY = 7,
+        id = 'ladder',
+        startX = 2,
+        startY = 8,
+    },
+    JumpObject {
+        endX = 7,
+        endY = 7,
+        id = 'ladder',
+        startX = 6,
+        startY = 9,
+    },
+    JumpObject {
+        endX = 8,
+        endY = 8,
+        id = 'ladder',
+        startX = 10,
+        startY = 9,
+    },
+    JumpObject {
+        endX = 1,
+        endY = 9,
+        id = 'ladder',
+        startX = 3,
+        startY = 10,
+    },
+    JumpObject {
+        endX = 7,
+        endY = 9,
+        id = 'ladder',
+        startX = 6,
+        startY = 10,
+    },
+}

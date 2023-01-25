@@ -70,15 +70,7 @@ function PlayState:init()
     end)
 
     -- Initializing a jump-object, (can be Ladder or Snake)
-    self.jumpObjects = {
-        JumpObject {
-            startX = 2,
-            startY = 1,
-    
-            endX = 2,
-            endY = 10
-        },
-    }
+    self.jumpObjects = JUMP_OBJECTS
 end
 
 function PlayState:update(dt)
@@ -115,8 +107,17 @@ function PlayState:render()
     --[[
         Render the Ladders n Snakes
     ]]
-    for i, jumpObject in ipairs(self.jumpObjects) do
-        jumpObject:render(offsetX, offsetY)
+    -- First render the snakes
+    for i, snake in ipairs(self.jumpObjects) do
+        if(snake.id == 'snake') then
+            snake:render(offsetX, offsetY)
+        end
+    end
+    -- Then render the ladders
+    for i, ladder in ipairs(self.jumpObjects) do
+        if(ladder.id == 'ladder') then
+            ladder:render(offsetX, offsetY)
+        end
     end
 
     --[[
@@ -148,9 +149,12 @@ function renderBlock(x, y, width, height, offsetX, offsetY)
     local tileColor = (y % 2 == 0) and COLORS.TILE_COLOR_EVEN or COLORS.TILE_COLOR_ODD
     local fontColor = (y % 2 == 0) and COLORS.TILE_COLOR_ODD or COLORS.TILE_COLOR_EVEN
 
+    -- The roundness of the rectangle
+    local rectangleRoundness = 12
+
     -- Render the rectangle
     love.graphics.setColor(tileColor)
-    love.graphics.rectangle("fill", (x-1)*width + offsetX, (y-1)*height + offsetY, width, height, 5, 5)
+    love.graphics.rectangle("fill", (x-1)*width + offsetX, (y-1)*height + offsetY, width, height, rectangleRoundness, rectangleRoundness)
 
     -- Also put a small text indicating the number of the tile
     love.graphics.setFont(gFonts['small'])
@@ -160,5 +164,5 @@ function renderBlock(x, y, width, height, offsetX, offsetY)
 
     love.graphics.setColor(COLORS.TILE_COLOR_BORDER)
     -- Make a border rectangle
-    love.graphics.rectangle("line", (x-1)*width + offsetX, (y-1)*height + offsetY, width, height, 5, 5)
+    love.graphics.rectangle("line", (x-1)*width + offsetX, (y-1)*height + offsetY, width, height, rectangleRoundness, rectangleRoundness)
 end
