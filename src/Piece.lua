@@ -11,6 +11,7 @@ function Piece:init(params)
     self.height = TILESIZE * 0.75
     self.x = params.x
     self.y = params.y
+    self.isInTransition = false
 end
 
 function Piece:update(dt)
@@ -104,7 +105,10 @@ end
 ]]
 function Piece:gotoPlace(newX, newY)
     -- Validate and move the piece
+    self.isInTransition = true
     Timer.tween(0.25, {
         [self] = {x = newX, y = newY}
-    })
+    }):finish(function()
+        self.isInTransition = false
+    end)
 end

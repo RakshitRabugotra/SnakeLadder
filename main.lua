@@ -11,8 +11,8 @@ function love.load()
     -- seeding the RNG
     math.randomseed(os.time())
 
-    -- Setting the default filter for textures
-    -- love.graphics.setDefaultFilter('nearest', 'nearest')
+    -- Fetch the background color
+    gBackgroundImage = love.graphics.newImage("files/bg-image.jpg")
 
     -- Setting up background color
     love.graphics.setBackgroundColor(128/255, 128/255, 128/255, 1)
@@ -111,6 +111,10 @@ function love.draw()
     -- push:apply('start')
     love.graphics.clear({0, 0, 0, 1})
 
+    love.graphics.setColor({1, 1, 1, 0.5})
+    -- Render the background image fitted to the size
+    love.graphics.draw(gBackgroundImage, 0, 0)
+
     -- Rendering the things in State-Machine to the screen
     gStateMachine:render()
 
@@ -118,4 +122,5 @@ function love.draw()
     renderFPS(SHOW_FPS)
 
     -- push:apply('end')
+    love.graphics.setColor(COLORS.DEFAULT)
 end

@@ -50,12 +50,12 @@ function JumpObject:render(renderOffsetX, renderOffsetY)
     ]]
     love.graphics.setFont(gFonts['small'])
 
-    love.graphics.setColor(COLORS.BLUE)
+    love.graphics.setColor(COLORS.BLACK)
     love.graphics.rectangle("line", (self.startX-1)*TILESIZE + TILESIZE*0.125 + renderOffsetX, (self.startY-1)*TILESIZE + TILESIZE*0.125 + renderOffsetY, self.width, self.height, 8, 8)
     love.graphics.setColor(COLORS.DEFAULT)
     love.graphics.printf("S", (self.startX-1)*TILESIZE + renderOffsetX, (self.startY-1)*TILESIZE + renderOffsetY + TILESIZE/2 - 8, TILESIZE, 'center')
 
-    love.graphics.setColor(COLORS.BLUE)
+    love.graphics.setColor(COLORS.BLACK)
     love.graphics.rectangle("line", (self.endX-1)*TILESIZE + TILESIZE*0.125 + renderOffsetX, (self.endY-1)*TILESIZE + TILESIZE*0.125 + renderOffsetY, self.width, self.height, 8, 8)
     love.graphics.setColor(COLORS.DEFAULT)
     love.graphics.printf("E", (self.endX-1)*TILESIZE + renderOffsetX, (self.endY-1)*TILESIZE + renderOffsetY + TILESIZE/2 - 8, TILESIZE, 'center')

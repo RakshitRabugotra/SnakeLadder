@@ -3,6 +3,14 @@
 ]]
 PlayState = Class{__includes = BaseState}
 
+function PlayState:enter()
+    -- The transition rectangle alpha, for the transition
+    self.transitionRectangleAlpha = 1
+    Timer.tween(1, {
+        [self] = {transitionRectangleAlpha = 0}
+    })
+end
+
 function PlayState:init()
     --[[
         Instantiate a 2D array definning the positions the player can get to
@@ -19,9 +27,26 @@ function PlayState:init()
     --[[
         Instantiate a playing piece
     ]]
+    -- Keep track of the current player
+    self.currentPlayer = 1
     self.players = {
         Piece {
             color = COLORS.RED,
+            x = 1,
+            y = 10
+        },
+        Piece {
+            color = COLORS.BLUE,
+            x = 1,
+            y = 10
+        },
+        Piece {
+            color = COLORS.YELLOW,
+            x = 1,
+            y = 10
+        },
+        Piece {
+            color = COLORS.GREEN,
             x = 1,
             y = 10
         }
@@ -34,9 +59,14 @@ function PlayState:init()
 
     -- Set the die to move player on every roll
     self.dice:onRollCall(function(numberOfTiles)
-        pos = self.players[1]:move(numberOfTiles)
-        io.write("new Position: X/Y:", pos[1], "/", pos[2], "\n")
-        self.players[1]:gotoPlace(pos[1], pos[2])
+        -- If the player is in-transition, then don't move
+        if self.players[self.currentPlayer].isInTransition then return end
+        -- Get the position of the player after moving it
+        local newPos = self.players[self.currentPlayer]:move(numberOfTiles)
+        -- Move the player to the new Position
+        self.players[self.currentPlayer]:gotoPlace(newPos[1], newPos[2])
+        -- Increment the active player accordingly
+        self.currentPlayer = (self.currentPlayer + 1 <= 4) and self.currentPlayer + 1 or 1
     end)
 
     -- Initializing a jump-object, (can be Ladder or Snake)
@@ -55,14 +85,6 @@ function PlayState:update(dt)
     -- Update the Dice object (to check for the input)
     self.dice:update(dt)
     
-    local x = self.players[1].x
-    local y = self.players[1].y
-    -- For debugging purpose only
-    if love.keyboard.wasPressed('space') then
-        self.lastPosX = x
-        self.lastPosY = y
-    end
-    
     -- Update all the players
     for i, player in ipairs(self.players) do
         player:update(dt)
@@ -71,12 +93,7 @@ function PlayState:update(dt)
             move it
         ]]
         for i, jumpObject in ipairs(self.jumpObjects) do
-            if(jumpObject:collides(player)) then
-                jumpObject:move(player)
-                -- Timer.tween(2, {
-                    -- [player] = {x = jumpObject.endX, y = jumpObject.endY}
-                -- })
-            end
+            if(jumpObject:collides(player)) then jumpObject:move(player) end
         end
     end
 end
@@ -114,6 +131,9 @@ function PlayState:render()
     self.dice.x = (offsetX - self.dice.width)/2
     self.dice.y = (WINDOW_HEIGHT - self.dice.height)/2 
     self.dice:render()
+
+    love.graphics.setColor({1, 1, 1, self.transitionRectangleAlpha})
+    love.graphics.rectangle("fill", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
 
     -- Set the Color of the screen to Default
     love.graphics.setColor(COLORS.DEFAULT)

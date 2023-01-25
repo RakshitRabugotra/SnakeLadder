@@ -20,6 +20,7 @@ function StartState:update(dt)
         if self.highlighted == 1 then
             -- Change to Gameplay state
             gSounds['confirm']:play()
+            -- Transition to the playing state
             gStateMachine:change('play', {})
         
         elseif self.highlighted == 2 then
@@ -51,7 +52,4 @@ function StartState:render()
     end
 
     love.graphics.printf("QUIT GAME", 0, WINDOW_HEIGHT*0.75 + 28, WINDOW_WIDTH, 'center')
-
-    -- Setting the font color back to default
-    love.graphics.setColor(1, 1, 1, 1)
 end
