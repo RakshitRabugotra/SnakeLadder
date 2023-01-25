@@ -68,13 +68,16 @@ function PlayState:update(dt)
     -- Update all the players
     for i, player in ipairs(self.players) do
         player:update(dt)
+        --[[
+            If the player's position collides with jump object,
+            move it
+        ]]
+        for i, jumpObject in ipairs(self.jumpObjects) do
+            if(jumpObject:collides(player)) then
+                jumpObject:move(player)
+            end
+        end
     end
-
-    --[[
-        If the player's position collides with jump object,
-        move it
-    ]]
-    if(self.jumpObjects[1]:collides(self.players[1])) then self.jumpObjects[1]:move(self.players[1]) end
 end
 
 function PlayState:render()
