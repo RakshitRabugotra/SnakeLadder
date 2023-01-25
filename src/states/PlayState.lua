@@ -43,8 +43,8 @@ function PlayState:init()
             startX = 2,
             startY = 1,
     
-            endX = 9,
-            endY = 9
+            endX = 2,
+            endY = 10
         },
     }
 end
